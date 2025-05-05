@@ -9,7 +9,7 @@ export class MailerService {
     return this.mailer.sendMail({
       to,
       subject: 'Welcome! 🎉',
-      template: 'welcome', // resolves to templates/welcome.hbs
+      template: 'welcome', 
       context: { username },
     });
   }

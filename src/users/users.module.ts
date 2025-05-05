@@ -3,12 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { User } from './user.entity';
-import { MailerModule } from '@nestjs-modules/mailer'; // ✅ Import this!
+import { MailerModule } from '@nestjs-modules/mailer'; 
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
-    MailerModule, // ✅ This is the key!
+    MailerModule, 
   ],
   providers: [UsersService],
   controllers: [UsersController],

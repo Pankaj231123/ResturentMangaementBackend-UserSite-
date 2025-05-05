@@ -28,7 +28,7 @@ import { AuthModule } from './auth/auth.module';
           throw new Error('JWT_SECRET is not set in the environment');
         }
 
-        console.log('✅ JWT_SECRET loaded');
+        console.log('JWT_SECRET loaded');
         return {
           secret: jwtSecret,
           signOptions: { expiresIn: jwtExpiresIn },
@@ -46,7 +46,7 @@ import { AuthModule } from './auth/auth.module';
           throw new Error('MAIL_USER or MAIL_PASS is not set in the environment');
         }
 
-        console.log('✅ MAIL_USER and MAIL_PASS loaded');
+        console.log('MAIL_USER and MAIL_PASS loaded');
 
         return {
           transport: {

@@ -21,7 +21,7 @@ import { MAIL_TEMPLATES_DIR, DEFAULT_FROM } from './mailer.constants';
               clientId: configService.get('GOOGLE_CLIENT_ID'),
               clientSecret: configService.get('GOOGLE_CLIENT_SECRET'),
               refreshToken: configService.get('GOOGLE_REFRESH_TOKEN'),
-              accessToken: configService.get('GOOGLE_ACCESS_TOKEN'), // If you have a static access token, you can use it here directly.
+              accessToken: configService.get('GOOGLE_ACCESS_TOKEN'), 
             },
           },
           defaults: { from: DEFAULT_FROM },

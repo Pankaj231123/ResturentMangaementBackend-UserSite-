@@ -21,7 +21,7 @@ export class UsersService {
     private readonly mailer: MailerService,
   ) {}
 
-  /** ✅ Create a new user with hashed password */
+  /** Create a new user with hashed password */
   async saveData(data: CreateUserDto): Promise<User> {
     const user = this.userRepository.create({
       ...data,
@@ -30,25 +30,25 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  /** ✅ Retrieve all users */
+  /**  Retrieve all users */
   allData(): Promise<User[]> {
     return this.userRepository.find();
   }
 
-  /** ✅ Get a user by ID */
+  /**  Get a user by ID */
   async getId(id: number): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) throw new NotFoundException(`User ${id} not found`);
     return user;
   }
 
-  /** ✅ Delete a user by ID */
+  /**  Delete a user by ID */
   async deleteId(id: number): Promise<void> {
     const result = await this.userRepository.delete(id);
     if (result.affected === 0) throw new NotFoundException(`User ${id} not found`);
   }
 
-  /** ✅ Update user data with optional password re-hashing */
+  /**  Update user data with optional password re-hashing */
   async updateData(id: number, data: UpdateUserDto): Promise<User> {
     const user = await this.getId(id);
     if (data.password) {
@@ -58,17 +58,17 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  /** ✅ Find a user by username */
+  /**  Find a user by username */
   async findByUsername(username: string): Promise<User | null> {
     return this.userRepository.findOne({ where: { username } });
   }
 
-  /** ✅ Find a user by ID */
+  /**  Find a user by ID */
   async findById(id: number): Promise<User | null> {
     return this.userRepository.findOne({ where: { id } });
   }
 
-  /** ✅ Find a user by email and include password */
+  /**  Find a user by email and include password */
   async findByEmail(email: string): Promise<User | null> {
     return this.userRepository.findOne({
       where: { email },
@@ -76,25 +76,25 @@ export class UsersService {
     });
   }
 
-  /** ✅ Generate OTP, log to file, and send via email */
+  /**  Generate OTP, log to file, and send via email */
   async generateAndSendOtp(email: string): Promise<string> {
     const user = await this.findByEmail(email);
     if (!user) {
-      console.error(`[OTP] ❌ No user found with email: ${email}`);
+      console.error(`[OTP]  No user found with email: ${email}`);
       throw new NotFoundException(`User with email ${email} not found`);
     }
 
     const otp = crypto.randomInt(100000, 999999).toString();
     this.otpCache[email] = otp;
 
-    // ✅ Log OTP to file (dev only)
+    //  Log OTP to file (dev only)
     const logDir = path.join(__dirname, '../../logs');
     const logFile = path.join(logDir, 'otp-log.txt');
     if (!fs.existsSync(logDir)) fs.mkdirSync(logDir);
     fs.appendFileSync(logFile, `OTP for ${email}: ${otp}\n`);
 
-    console.log(`[OTP] ✅ Generated OTP ${otp} for ${email}`);
-    console.log(`[OTP] 📨 Attempting to send email to ${email}...`);
+    console.log(`[OTP]  Generated OTP ${otp} for ${email}`);
+    console.log(`[OTP]  Attempting to send email to ${email}...`);
 
     try {
       await this.mailer.sendMail({
@@ -103,10 +103,10 @@ export class UsersService {
         text: `Hello ${user.username},\n\nYour OTP code is: ${otp}\nIt will expire in 5 minutes.`,
       });
 
-      console.log(`[OTP] ✅ Email sent to ${email}`);
+      console.log(`[OTP]  Email sent to ${email}`);
       return 'OTP sent successfully';
     } catch (error) {
-      console.error(`[OTP] ❌ Failed to send OTP email to ${email}`);
+      console.error(`[OTP]  Failed to send OTP email to ${email}`);
       console.error(error);
       throw new Error('Failed to send OTP email');
     }
@@ -124,7 +124,7 @@ async sendOtpEmail(email: string, otp: string): Promise<void> {
 }
 
 
-  /** ✅ Verify the OTP from the cache */
+  /** Verify the OTP from the cache */
   verifyOtp(email: string, otp: string): boolean {
     const expected = this.otpCache[email];
     if (expected && expected === otp) {
